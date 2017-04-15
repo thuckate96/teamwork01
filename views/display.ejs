@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+    <title>Test</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body        { padding-top:80px; }
+    </style>
+    <script type="text/javascript">
+        function editClicked(i){
+           
+            // var val1 = document.getElementById("user_id").value;
+            //val1 = document.getElementsByTagName('table')[0].rows[i+1].user_id.value;
+            //document.getElementById("demo").innerHTML = val1;
+            var val1 = document.getElementById(i).value;
+            document.getElementById('demo2_2').value = val1;
+            var val2 = document.getElementsByTagName('table')[0].rows[i+1].cells[1].innerHTML;
+            document.getElementById('demo2').value = val2;
+            var val3 = document.getElementsByTagName('table')[0].rows[i+1].cells[2].innerHTML;
+            document.getElementById('demo3').value = val3;
+            var val4 = document.getElementsByTagName('table')[0].rows[i+1].cells[3].innerHTML;
+            document.getElementById('demo4').value = val4;
+             var val5 = document.getElementsByTagName('table')[0].rows[i+1].cells[4].innerHTML;
+            document.getElementById('demo5').value = val5;
+        }
+        function load(){
+          $.ajax({
+            url:      "/api/user", 
+            type:     "PUT", 
+            dataType: "text", 
+            data:     {
+              username: $("#demo2").val(),
+              user_id:  $("#demo2_2").val(), 
+              email:    $("#demo3").val(), 
+              address:  $("#demo4").val(), 
+              hobbies:  $("#demo5").val()
+            }, 
+            success: function(result){
+              //var data = JSON.parse(result);
+              //alert(document.getElementById('demo2_2').value);
+              // return data;
+              //var idUpdate =
+              //chua biet chinh sua du lieu nen dung cach nay cho nhanh 
+              location.reload(); 
+            }
+          })
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+
+<div class="col-sm-6 col-sm-offset-1">
+
+
+    <div id="info">
+             <table class="datatable table table-striped" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+
+                  <th>Stt</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Address</th>
+                  <th>Hobbies</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+        
+                <tbody>
+                    <%var stt = 0; %>
+                    <%for(i in user){ %>
+                          
+                    <tr>
+                        <td><%=stt%><input type="hidden" id="<%=stt%>" value = "<%=user[i]._id%>" ></td>
+                        <td><%=user[i].username%></td>
+                        <td><%=user[i].email%></td>
+                        <td><%=user[i].address%></td>
+                        <td><%=user[i].hobbies%></td>
+                        <td>
+                             
+                              <!-- Trigger the modal with a button -->
+                              <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" onclick="editClicked(<%=stt++ %>)">edit</button>
+
+                              <!-- Modal -->
+                              <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal-dialog" style="width : 65%px;">
+                                
+                                  <!-- Modal content-->
+                                  <div class="modal-content" >
+                                    <div class="modal-header">
+                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      <h4 class="modal-title">Edit user</h4>
+                                      <p id="demo"></p>
+                                    </div>
+                                    <div class="modal-body">
+
+                                       <table class="table">
+                                            <!-- <form action="/api/user/editUser" method="POST"> -->
+                                                  <thead class="thead-inverse">
+                                                    <tr>
+                                                      
+                                                      <th>Username</th>
+                                                      <th>Email</th>
+                                                      <th>Address</th>
+                                                      <th>Hobbies</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tr>
+                                                    <!-- <td>
+                                                        <p id="demo1"> </p>
+                                                    </td> -->
+                                                    <td>
+                                                        <input style="width: 110px" type="text" name="username" id="demo2">
+                                                        <input type="hidden" name="user_id" id="demo2_2">
+                                                    </td>
+                                                    <td>
+                                                        <input style="width: 130px" type="text" name="email" id="demo3">
+                                                    </td>
+                                                    <td>
+                                                        <input style="width: 110px" type="text" name="address" id="demo4">
+                                                    </td>
+                                                    <td>
+                                                        <input style="width: 110px" type="text" name="hobbies" id="demo5">
+                                                    </td>
+                                                  </tr>
+                                                  <tr>
+                                                      
+                                                  </tr>
+                                                </table>
+                                                <button type="button" onclick="load()" class="btn btn-success">Edit</button>
+                                        <!-- </form> -->
+                                         <p id="result"></p>
+                                          
+                                          
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                  </div>
+                                  
+                                </div>
+                              </div>
+
+                        </td>
+                        <td></td>
+                    </tr>
+                    <%}%>
+                </tbody>
+    </table>
+    </div>
+</div>
+
+</div>
+</body>
+</html>
